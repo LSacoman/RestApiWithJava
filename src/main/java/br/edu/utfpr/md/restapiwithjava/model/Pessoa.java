@@ -1,17 +1,14 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 @Entity
 @Table(name = "tb_pessoa")
@@ -20,18 +17,25 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column(nullable = false)
     @NotNull
     private String nome;
-
-    @Temporal(TemporalType.DATE)
-    @Past
-    private Date dataNascimento;
-
-    private String email;
-
+    private String login;
     private String senha;
+    private Address address;
+    private List<Document> documents;
+
+    public Pessoa() {
+    }
+
+    public Pessoa(int id, String nome, String login, String senha, Address address, List<Document> documents) {
+        this.id = id;
+        this.nome = nome;
+        this.login = login;
+        this.senha = senha;
+        this.address = address;
+        this.documents = documents;
+    }
 
     public int getId() {
         return id;
@@ -49,26 +53,12 @@ public class Pessoa implements Serializable {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
+    public String getLogin() {
+        return login;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    /*
-    public void setDataNascimentoByDate(Date dataNascimento) {
-        this.dataNascimento = new GregorianCalendar();
-        this.dataNascimento.setTime(dataNascimento);
-    }
-    */
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getSenha() {
@@ -79,8 +69,19 @@ public class Pessoa implements Serializable {
         this.senha = senha;
     }
 
-    @Override
-    public String toString() {
-        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", dataNascimento=" + dataNascimento + ", email=" + email + ", senha=" + senha + '}';
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 }

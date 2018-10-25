@@ -9,26 +9,26 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import br.edu.utfpr.md.restapiwithjava.dao.PessoaDAO;
-import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
+import br.edu.utfpr.md.restapiwithjava.dao.KeywordDAO;
+import br.edu.utfpr.md.restapiwithjava.model.Keyword;
 import java.util.List;
 import javax.inject.Inject;
 
 @Controller
-@Path("/pessoa")
-public class PessoaResource {
-
+@Path("/keyword")
+public class KeywordResource {
+    
     @Inject
-    private PessoaDAO pessoaDAO;
+    private KeywordDAO keywordDAO;
     @Inject
     private Result result;
 
     @Post(value = {"", "/"})
     @Consumes("application/json")
-    public void save(Pessoa pessoa) {
+    public void save(Keyword keyword) {
         try {
-            pessoaDAO.save(pessoa);
-            result.use(Results.json()).withoutRoot().from(pessoa).serialize();
+            keywordDAO.save(keyword);
+            result.use(Results.json()).withoutRoot().from(keyword).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
             e.printStackTrace();
@@ -37,18 +37,18 @@ public class PessoaResource {
 
     @Put(value = {"", "/"})
     @Consumes("application/json")
-    public void update(Pessoa pessoa) {
-        pessoaDAO.update(pessoa);
-        result.use(Results.json()).withoutRoot().from(pessoa).serialize();
+    public void update(Keyword keyword) {
+        keywordDAO.update(keyword);
+        result.use(Results.json()).withoutRoot().from(keyword).serialize();
     }
 
     @Delete("/{id}")
     public void delete(int id) {
-        Pessoa p = pessoaDAO.getById(id);
+        Keyword p = keywordDAO.getById(id);
         if (p == null) {
             result.use(Results.status()).notFound();
         } else {
-            pessoaDAO.delete(p);
+            keywordDAO.delete(p);
             // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
@@ -56,13 +56,13 @@ public class PessoaResource {
 
     @Get("/{id}")
     public void getOne(int id) {
-        Pessoa p = pessoaDAO.getById(id);
+        Keyword p = keywordDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
     @Get(value = {"", "/"})
     public void getAll() {
-        List<Pessoa> list = pessoaDAO.findAll();
+        List<Keyword> list = keywordDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
 }
