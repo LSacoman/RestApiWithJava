@@ -1,10 +1,13 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +18,8 @@ public class Keyword implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @ManyToMany(mappedBy = "keywords")
+    private Collection<Document> documents = new ArrayList<>();
 
     public Keyword() {
     }
@@ -40,4 +45,13 @@ public class Keyword implements Serializable {
         this.name = name;
     }
 
+    public Collection<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Collection<Document> documents) {
+        this.documents = documents;
+    }
+
+    
 }

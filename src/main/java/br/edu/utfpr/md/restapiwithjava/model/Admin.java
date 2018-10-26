@@ -1,5 +1,5 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
-public class Admin {
+public class Admin extends Pessoa{
     // extends Pessoa
 }

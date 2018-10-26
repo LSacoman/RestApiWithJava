@@ -1,12 +1,17 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,25 +23,36 @@ public class Document implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
     private String description;
+    
     @Temporal(TemporalType.DATE)
     private Date date;
+    
     @Temporal(TemporalType.DATE)
     private Date lastUpdate;
+    
     private String fileName;
-    private List<Keyword> keywords;
+    
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
+    
+    @ManyToMany
+    @JoinTable(name = "document_keyword",
+            joinColumns = @JoinColumn(name = "document_id"),
+            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    private Collection<Keyword> keywords = new ArrayList<>();
 
     public Document() {
     }
 
-    public Document(int id, String description, Date date, Date lastUpdate, String fileName, List<Keyword> keywords, Category category) {
+    public Document(int id, String description, Date date, Date lastUpdate, String fileName, Category category) {
         this.id = id;
         this.description = description;
         this.date = date;
         this.lastUpdate = lastUpdate;
         this.fileName = fileName;
-        this.keywords = keywords;
         this.category = category;
     }
 
@@ -80,14 +96,6 @@ public class Document implements Serializable {
         this.fileName = fileName;
     }
 
-    public List<Keyword> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(List<Keyword> keywords) {
-        this.keywords = keywords;
-    }
-
     public Category getCategory() {
         return category;
     }
@@ -96,4 +104,13 @@ public class Document implements Serializable {
         this.category = category;
     }
 
+    public Collection<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Collection<Keyword> keywords) {
+        this.keywords = keywords;
+    }
+
+    
 }

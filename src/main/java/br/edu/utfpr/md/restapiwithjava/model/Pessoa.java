@@ -1,18 +1,23 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_pessoa")
-public class Pessoa implements Serializable {
+public abstract class Pessoa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,19 +27,23 @@ public class Pessoa implements Serializable {
     private String nome;
     private String login;
     private String senha;
+    
+    @OneToOne
+    @JoinColumn(name = "address_id")
     private Address address;
-    private List<Document> documents;
+    
+    @OneToMany(cascade = CascadeType.PERSIST, targetEntity = Document.class)
+    private Collection<Document> documents = new ArrayList<>();
 
     public Pessoa() {
     }
 
-    public Pessoa(int id, String nome, String login, String senha, Address address, List<Document> documents) {
+    public Pessoa(int id, String nome, String login, String senha, Address address) {
         this.id = id;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
         this.address = address;
-        this.documents = documents;
     }
 
     public int getId() {
@@ -77,11 +86,13 @@ public class Pessoa implements Serializable {
         this.address = address;
     }
 
-    public List<Document> getDocuments() {
+    public Collection<Document> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(Collection<Document> documents) {
         this.documents = documents;
     }
+
+    
 }
