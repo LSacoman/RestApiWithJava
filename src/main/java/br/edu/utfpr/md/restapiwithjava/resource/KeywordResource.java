@@ -11,6 +11,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.KeywordDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Keyword;
+import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,6 +24,7 @@ public class KeywordResource {
     @Inject
     private Result result;
 
+    @Autenticado
     @Post(value = {"", "/"})
     @Consumes("application/json")
     public void save(Keyword keyword) {
@@ -35,6 +37,7 @@ public class KeywordResource {
         }
     }
 
+    @Autenticado
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Keyword keyword) {
@@ -42,6 +45,7 @@ public class KeywordResource {
         result.use(Results.json()).withoutRoot().from(keyword).serialize();
     }
 
+    @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
         Keyword p = keywordDAO.getById(id);
@@ -54,17 +58,21 @@ public class KeywordResource {
         }
     }
 
+    @Autenticado
     @Get("/{name}")
     public void getOne(String name) {
         List<Keyword> p = keywordDAO.getByName(name);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
+    @Autenticado
     @Get(value = {"", "/"})
     public void getAll() {
         List<Keyword> list = keywordDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
+    
+    @Autenticado
     @Get("/id/{id}")
     public void getOneByID(int id){
         Keyword p = keywordDAO.getById(id);

@@ -15,12 +15,14 @@ public class JWTUtil {
 
     private static final String SECRET = "my secret";
 
-    public static String createToken(Long userId) {
+    public static String createToken(Long userId, String username, String password) {
         JWTSigner signer = new JWTSigner(SECRET);
 
         HashMap<String, Object> claims = new HashMap<String, Object>();
 
         claims.put("user", userId);
+        claims.put("username", username);
+        claims.put("password", password);
 
         String token = signer.sign(claims, new JWTSigner.Options()
                 .setExpirySeconds(60 * 60 * 24 * 365 * 30).setIssuedAt(true));

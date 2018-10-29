@@ -12,7 +12,7 @@ import br.edu.utfpr.md.restapiwithjava.security.JWTUtil;
 import javax.inject.Inject;
 
 @Controller
-@Path("/auth")
+//@Path("/login")
 public class AuthResource {
 
     @Inject
@@ -20,12 +20,18 @@ public class AuthResource {
     @Inject
     private Result result;
 
-    @Post(value = {"", "/"})
+    @Post(value = {"/login"})
     @Consumes("application/json")
-    public void autenticate(Pessoa pessoa) {
-        if(pessoaDAO.Autenticate(pessoa)){
-            String token = JWTUtil.createToken((long) pessoa.getId());
-            result.use(Results.json()).withoutRoot().from(token).serialize();
+    public void login(String username, String password) {
+        Pessoa p = pessoaDAO.Autenticate(username, password);
+        if(p != null){
+            String token = JWTUtil.createToken((long) p.getId(), p.getLogin(), p.getSenha());
+            
+            result.use(Results.status()).header("Content-type", "text/html");
+            result.use(Results.status()).ok();
+            result.use(Results.http()).body(token);
+        }else{
+            result.use(Results.http()).setStatusCode(404);
         }
     }
 }

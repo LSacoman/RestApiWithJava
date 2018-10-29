@@ -11,6 +11,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.PessoaDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
+import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -35,6 +36,7 @@ public class PessoaResource {
         }
     }
 
+    @Autenticado
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Pessoa pessoa) {
@@ -42,6 +44,7 @@ public class PessoaResource {
         result.use(Results.json()).withoutRoot().from(pessoa).serialize();
     }
 
+    @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
         Pessoa p = pessoaDAO.getById(id);
@@ -54,12 +57,14 @@ public class PessoaResource {
         }
     }
 
+    @Autenticado
     @Get("/{id}")
     public void getOne(int id) {
         Pessoa p = pessoaDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
+    @Autenticado
     @Get(value = {"", "/"})
     public void getAll() {
         List<Pessoa> list = pessoaDAO.findAll();

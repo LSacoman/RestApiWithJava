@@ -11,6 +11,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.DocumentDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Document;
+import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,6 +24,7 @@ public class DocumentResource {
     @Inject
     private Result result;
 
+    @Autenticado
     @Post(value = {"", "/"})
     @Consumes("application/json")
     public void save(Document document) {
@@ -35,6 +37,7 @@ public class DocumentResource {
         }
     }
 
+    @Autenticado
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Document document) {
@@ -42,6 +45,7 @@ public class DocumentResource {
         result.use(Results.json()).withoutRoot().from(document).serialize();
     }
 
+    @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
         Document p = documentDAO.getById(id);
@@ -54,23 +58,28 @@ public class DocumentResource {
         }
     }
 
+    @Autenticado
     @Get("/{id}")
     public void getOne(int id) {
         Document p = documentDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
+    @Autenticado
     @Get(value = {"", "/"})
     public void getAll() {
         List<Document> list = documentDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
     
+    @Autenticado
     @Get(value = {"/person/{id}"})
     public void getDocumentsByUser(int id){
         // obtem todos os documentos de um usuario
         
     }
+    
+    @Autenticado
     @Get(value = {"/tag/{name}"})
     public void getDocumentsByKeyword(String name){
         // obtem todos os documentos com a categoria "name"

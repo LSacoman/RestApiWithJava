@@ -52,15 +52,15 @@ public class SecurityInterceptor {
 
             Integer userId = (Integer) claims.get("user");
 
-            if (userId != 1) {
+            /*if (userId != 1) {
                 result.use(Results.http()).setStatusCode(401);
                 result.use(Results.json())
                         .from("Credenciais inválidas", "msg").serialize();
-            } else {
-                result.use(Results.http()).addHeader("Authorization", token);
+            } else {*/
+            result.use(Results.http()).addHeader("Authorization", token);
 
-                stack.next();
-            }
+            stack.next();
+            /* }*/
         } catch (InvalidKeyException | NoSuchAlgorithmException
                 | IllegalStateException | SignatureException | IOException
                 | JWTVerifyException e) {

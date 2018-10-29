@@ -11,6 +11,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.AddressDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Address;
+import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -23,6 +24,7 @@ public class AddressResource {
     @Inject
     private Result result;
 
+    @Autenticado
     @Post(value = {"", "/"})
     @Consumes("application/json")
     public void save(Address address) {
@@ -35,6 +37,7 @@ public class AddressResource {
         }
     }
 
+    @Autenticado
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Address address) {
@@ -42,6 +45,7 @@ public class AddressResource {
         result.use(Results.json()).withoutRoot().from(address).serialize();
     }
 
+    @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
         Address p = addressDAO.getById(id);
@@ -54,12 +58,14 @@ public class AddressResource {
         }
     }
 
+    @Autenticado
     @Get("/{id}")
     public void getOne(int id) {
         Address p = addressDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
+    @Autenticado
     @Get(value = {"", "/"})
     public void getAll() {
         List<Address> list = addressDAO.findAll();

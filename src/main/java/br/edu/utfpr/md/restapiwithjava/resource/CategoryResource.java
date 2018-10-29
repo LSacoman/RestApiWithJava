@@ -10,7 +10,9 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.CategoryDAO;
+import br.edu.utfpr.md.restapiwithjava.dao.PessoaDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Category;
+import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -21,8 +23,11 @@ public class CategoryResource {
     @Inject
     private CategoryDAO categoryDAO;
     @Inject
+    private PessoaDAO pessoaDAO;
+    @Inject
     private Result result;
 
+    @Autenticado
     @Post(value = {"", "/"})
     @Consumes("application/json")
     public void save(Category category) {
@@ -35,6 +40,7 @@ public class CategoryResource {
         }
     }
 
+    @Autenticado
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Category category) {
@@ -42,6 +48,7 @@ public class CategoryResource {
         result.use(Results.json()).withoutRoot().from(category).serialize();
     }
 
+    @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
         Category p = categoryDAO.getById(id);
@@ -54,18 +61,21 @@ public class CategoryResource {
         }
     }
 
+    @Autenticado
     @Get("/{id}")
     public void getOne(int id) {
         Category p = categoryDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
+    @Autenticado
     @Get(value = {"", "/"})
     public void getAll() {
         List<Category> list = categoryDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
     
+    @Autenticado
     @Get(value = {"/person/{id}"})
     public void getAllCategories(int id){
         // obtem todas as categorias de um usuario
