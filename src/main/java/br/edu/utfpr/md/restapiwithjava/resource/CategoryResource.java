@@ -65,4 +65,10 @@ public class CategoryResource {
         List<Category> list = categoryDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
+    
+    @Get(value = {"/person/{id}"})
+    public void getAllCategories(int id){
+        // obtem todas as categorias de um usuario
+        
+    }
 }

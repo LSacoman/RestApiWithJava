@@ -54,9 +54,9 @@ public class KeywordResource {
         }
     }
 
-    @Get("/{id}")
-    public void getOne(int id) {
-        Keyword p = keywordDAO.getById(id);
+    @Get("/{name}")
+    public void getOne(String name) {
+        List<Keyword> p = keywordDAO.getByName(name);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 
@@ -64,5 +64,10 @@ public class KeywordResource {
     public void getAll() {
         List<Keyword> list = keywordDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
+    }
+    @Get("/id/{id}")
+    public void getOneByID(int id){
+        Keyword p = keywordDAO.getById(id);
+        result.use(Results.json()).withoutRoot().from(p).serialize();
     }
 }

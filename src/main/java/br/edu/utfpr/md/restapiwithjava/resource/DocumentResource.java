@@ -65,4 +65,15 @@ public class DocumentResource {
         List<Document> list = documentDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
+    
+    @Get(value = {"/person/{id}"})
+    public void getDocumentsByUser(int id){
+        // obtem todos os documentos de um usuario
+        
+    }
+    @Get(value = {"/tag/{name}"})
+    public void getDocumentsByKeyword(String name){
+        // obtem todos os documentos com a categoria "name"
+        
+    }
 }
