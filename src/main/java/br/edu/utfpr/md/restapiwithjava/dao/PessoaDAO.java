@@ -1,6 +1,8 @@
 package br.edu.utfpr.md.restapiwithjava.dao;
 
+import br.edu.utfpr.md.restapiwithjava.model.Admin;
 import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
+import br.edu.utfpr.md.restapiwithjava.model.User;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 
@@ -30,5 +32,18 @@ public class PessoaDAO extends GenericDAO<Integer, Pessoa> {
         } catch (Exception e) {
         }
         return null;
+    }
+    
+    @Override
+    public void save(Pessoa p) {
+        Pessoa entity;
+        if(p.getLogin().contains("admin")){
+            entity = new Admin(p);
+        }else{
+            entity = new User(p);
+        }
+        entityManager.getTransaction().begin();
+        entityManager.persist(entity);
+        entityManager.getTransaction().commit();
     }
 }

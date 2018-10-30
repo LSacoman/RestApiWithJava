@@ -1,5 +1,20 @@
 package br.edu.utfpr.md.restapiwithjava.model;
 
+import javax.persistence.Entity;
+
+@Entity
 public class User extends Pessoa{
+
+    public User() {
+        super();
+    }
     // extends pessoa
+
+    public User(int id, String nome, String login, String senha, Address address) {
+        super(id, nome, login, senha, address);
+    }
+    
+    public User (Pessoa p){
+        super(p.getId(), p.getNome(), p.getLogin(), p.getSenha(), p.getAddress());
+    }
 }
