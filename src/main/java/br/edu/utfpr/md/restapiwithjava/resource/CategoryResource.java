@@ -12,6 +12,7 @@ import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.CategoryDAO;
 import br.edu.utfpr.md.restapiwithjava.dao.PessoaDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Category;
+import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
 import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 @Controller
 @Path("/category")
 public class CategoryResource {
-    
+
     @Inject
     private CategoryDAO categoryDAO;
     @Inject
@@ -74,11 +75,21 @@ public class CategoryResource {
         List<Category> list = categoryDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
-    
+
     @Autenticado
     @Get(value = {"/person/{id}"})
-    public void getAllCategories(int id){
+    public void getAllCategories(int id) {
         // obtem todas as categorias de um usuario
-        
+        Pessoa p = pessoaDAO.getById(id);
+        List<Category> categories = pessoaDAO.getDistinctCategories(p);
+        result.use(Results.status()).header("Content-type", "text/html");
+        result.use(Results.status()).ok();
+        String resultado = "";
+        if (categories != null) {
+            for (Category category : categories) {
+                resultado = resultado + category.getName() + " ";
+            }
+        }
+        result.use(Results.http()).body(resultado);
     }
 }
