@@ -37,7 +37,6 @@ public class CategoryResource {
             result.use(Results.json()).withoutRoot().from(category).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
-            e.printStackTrace();
         }
     }
 
@@ -57,7 +56,6 @@ public class CategoryResource {
             result.use(Results.status()).notFound();
         } else {
             categoryDAO.delete(p);
-            // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
     }

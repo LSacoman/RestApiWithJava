@@ -25,24 +25,21 @@ public class AuthResource {
     @Consumes("application/json")
     public void login(String username, String password) {
         Pessoa p = pessoaDAO.Autenticate(username, password);
-        if(p != null){
+        if (p != null) {
             String pessoaType = "";
-            if(p instanceof Admin){
-                System.out.println("Admin");
+            if (p instanceof Admin) {
                 pessoaType = "Admin";
-            }else if(p instanceof User){
-                System.out.println("User");
+            } else if (p instanceof User) {
                 pessoaType = "User";
-            }else{
-                System.out.println("Pessoa");
+            } else {
                 pessoaType = "Pessoa";
             }
             String token = JWTUtil.createToken((long) p.getId(), p.getLogin(), pessoaType);
-            
+
             result.use(Results.status()).header("Content-type", "text/html");
             result.use(Results.status()).ok();
             result.use(Results.http()).body(token);
-        }else{
+        } else {
             result.use(Results.http()).setStatusCode(404);
         }
     }

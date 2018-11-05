@@ -22,7 +22,7 @@ import javax.inject.Inject;
 @Controller
 @Path("/document")
 public class DocumentResource {
-    
+
     @Inject
     private DocumentDAO documentDAO;
     @Inject
@@ -41,7 +41,6 @@ public class DocumentResource {
             result.use(Results.json()).withoutRoot().from(document).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
-            e.printStackTrace();
         }
     }
 
@@ -61,7 +60,6 @@ public class DocumentResource {
             result.use(Results.status()).notFound();
         } else {
             documentDAO.delete(p);
-            // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
     }
@@ -79,20 +77,20 @@ public class DocumentResource {
         List<Document> list = documentDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
-    
+
     @Autenticado
     @Get(value = {"/person/{id}"})
-    public void getDocumentsByUser(int id){
+    public void getDocumentsByUser(int id) {
         Pessoa p = pessoaDAO.getById(id);
         List<Document> documents = documentDAO.getDocumentsByUser(p);
         result.use(Results.json()).withoutRoot().from(documents).serialize();
     }
-    
+
     @Autenticado
     @Get(value = {"/tag/{name}"})
-    public void getDocumentsByKeyword(String name){
+    public void getDocumentsByKeyword(String name) {
         // obtem todos os documentos com a categoria "name"
-        Keyword k  = keywordDAO.getByName(name);
+        Keyword k = keywordDAO.getByName(name);
         List<Document> documents = documentDAO.getDocumentsByKeyword(k);
         result.use(Results.json()).withoutRoot().from(documents).serialize();
     }

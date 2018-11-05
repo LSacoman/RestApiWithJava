@@ -32,7 +32,6 @@ public class PessoaResource {
             result.use(Results.json()).withoutRoot().from(pessoa).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
-            e.printStackTrace();
         }
     }
 
@@ -52,7 +51,6 @@ public class PessoaResource {
             result.use(Results.status()).notFound();
         } else {
             pessoaDAO.delete(p);
-            // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
     }

@@ -28,7 +28,6 @@ public class JWTUtil {
                 .setExpirySeconds(60 * 60 * 24 * 365 * 30).setIssuedAt(true));
 
         return token;
-
     }
 
     public static Map<String, Object> decode(String token)
@@ -41,5 +40,4 @@ public class JWTUtil {
 
         return map;
     }
-
 }

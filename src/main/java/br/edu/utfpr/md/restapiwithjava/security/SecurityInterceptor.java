@@ -51,6 +51,7 @@ public class SecurityInterceptor {
             System.out.println(claims);
 
             Integer userId = (Integer) claims.get("user");
+            String role = (String) claims.get("role");
 
             /*if (userId != 1) {
                 result.use(Results.http()).setStatusCode(401);

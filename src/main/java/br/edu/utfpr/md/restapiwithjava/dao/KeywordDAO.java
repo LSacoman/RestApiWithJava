@@ -9,8 +9,13 @@ public class KeywordDAO extends GenericDAO<Integer, Keyword> {
     public KeywordDAO() {
         super();
     }
-    
+
     public Keyword getByName(String name) {
-        return entityManager.createQuery(("SELECT e FROM Keyword e WHERE e.name LIKE '" + name + "'"), Keyword.class).getSingleResult();
+        Keyword k = null;
+        try {
+            k = entityManager.createQuery(("SELECT e FROM Keyword e WHERE e.name LIKE '" + name + "'"), Keyword.class).getSingleResult();
+        } catch (Exception e) {
+        }
+        return k;
     }
 }

@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Controller
 @Path("/keyword")
 public class KeywordResource {
-    
+
     @Inject
     private KeywordDAO keywordDAO;
     @Inject
@@ -33,7 +33,6 @@ public class KeywordResource {
             result.use(Results.json()).withoutRoot().from(keyword).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
-            e.printStackTrace();
         }
     }
 
@@ -53,7 +52,6 @@ public class KeywordResource {
             result.use(Results.status()).notFound();
         } else {
             keywordDAO.delete(p);
-            // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
     }
@@ -71,10 +69,10 @@ public class KeywordResource {
         List<Keyword> list = keywordDAO.findAll();
         result.use(Results.json()).withoutRoot().from(list).serialize();
     }
-    
+
     @Autenticado
     @Get("/id/{id}")
-    public void getOneByID(int id){
+    public void getOneByID(int id) {
         Keyword p = keywordDAO.getById(id);
         result.use(Results.json()).withoutRoot().from(p).serialize();
     }

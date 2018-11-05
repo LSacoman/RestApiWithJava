@@ -4,6 +4,7 @@ import br.edu.utfpr.md.restapiwithjava.model.Admin;
 import br.edu.utfpr.md.restapiwithjava.model.Category;
 import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
 import br.edu.utfpr.md.restapiwithjava.model.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.TypedQuery;
@@ -21,14 +22,13 @@ public class PessoaDAO extends GenericDAO<Integer, Pessoa> {
             p = entityManager.createQuery(
                     "SELECT p FROM Pessoa p WHERE p.login = '" + username
                     + "' AND p.senha = '" + password + "'", Pessoa.class).getSingleResult();
-            return p;
-        } catch (Exception e) {           
-            return p;
+        } catch (Exception e) {
         }
+        return p;
     }
-    
-    public List<Category> getDistinctCategories(Pessoa p){
-        List<Category> lista = null;
+
+    public List<Category> getDistinctCategories(Pessoa p) {
+        List<Category> lista = new ArrayList<>();
         try {
             TypedQuery<Category> cat = entityManager.createQuery(""
                     + "SELECT "
@@ -39,19 +39,18 @@ public class PessoaDAO extends GenericDAO<Integer, Pessoa> {
                     + "WHERE "
                     + "     p.documents = d"
                     + "     AND p.id = " + p.getId(), Category.class);
-            lista  = cat.getResultList();
+            lista = cat.getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return lista;
     }
-    
+
     @Override
     public void save(Pessoa p) {
         Pessoa entity;
-        if(p.getLogin().contains("admin")){
+        if (p.getLogin().contains("admin")) {
             entity = new Admin(p);
-        }else{
+        } else {
             entity = new User(p);
         }
         entityManager.getTransaction().begin();

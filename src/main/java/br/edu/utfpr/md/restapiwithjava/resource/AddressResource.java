@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Controller
 @Path("/address")
 public class AddressResource {
-    
+
     @Inject
     private AddressDAO addressDAO;
     @Inject
@@ -33,7 +33,6 @@ public class AddressResource {
             result.use(Results.json()).withoutRoot().from(address).serialize();
         } catch (Exception e) {
             result.use(Results.http()).setStatusCode(400);
-            e.printStackTrace();
         }
     }
 
@@ -53,7 +52,6 @@ public class AddressResource {
             result.use(Results.status()).notFound();
         } else {
             addressDAO.delete(p);
-            // result.use(Results.status()).ok();
             result.use(Results.nothing());
         }
     }
