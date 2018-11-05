@@ -10,7 +10,11 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import br.edu.utfpr.md.restapiwithjava.dao.DocumentDAO;
+import br.edu.utfpr.md.restapiwithjava.dao.KeywordDAO;
+import br.edu.utfpr.md.restapiwithjava.dao.PessoaDAO;
 import br.edu.utfpr.md.restapiwithjava.model.Document;
+import br.edu.utfpr.md.restapiwithjava.model.Keyword;
+import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
 import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
 import java.util.List;
 import javax.inject.Inject;
@@ -21,6 +25,10 @@ public class DocumentResource {
     
     @Inject
     private DocumentDAO documentDAO;
+    @Inject
+    private PessoaDAO pessoaDAO;
+    @Inject
+    private KeywordDAO keywordDAO;
     @Inject
     private Result result;
 
@@ -75,14 +83,17 @@ public class DocumentResource {
     @Autenticado
     @Get(value = {"/person/{id}"})
     public void getDocumentsByUser(int id){
-        // obtem todos os documentos de um usuario
-        
+        Pessoa p = pessoaDAO.getById(id);
+        List<Document> documents = documentDAO.getDocumentsByUser(p);
+        result.use(Results.json()).withoutRoot().from(documents).serialize();
     }
     
     @Autenticado
     @Get(value = {"/tag/{name}"})
     public void getDocumentsByKeyword(String name){
         // obtem todos os documentos com a categoria "name"
-        
+        Keyword k  = keywordDAO.getByName(name);
+        List<Document> documents = documentDAO.getDocumentsByKeyword(k);
+        result.use(Results.json()).withoutRoot().from(documents).serialize();
     }
 }

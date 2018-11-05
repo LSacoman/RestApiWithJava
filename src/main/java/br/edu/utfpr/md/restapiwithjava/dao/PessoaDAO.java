@@ -38,13 +38,7 @@ public class PessoaDAO extends GenericDAO<Integer, Pessoa> {
                     + "     Document d "
                     + "WHERE "
                     + "     p.documents = d"
-                    + "     AND p.id = 15", Category.class);
-            
-            
-            
-            // SELECT distinct(d.category_id) 
-            // FROM tb_document d, tb_pessoa_tb_document p 
-            // WHERE p.documents_ID = d.ID and p.Pessoa_ID = 1
+                    + "     AND p.id = " + p.getId(), Category.class);
             lista  = cat.getResultList();
         } catch (Exception e) {
             e.printStackTrace();

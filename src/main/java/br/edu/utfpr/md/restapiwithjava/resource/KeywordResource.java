@@ -61,8 +61,8 @@ public class KeywordResource {
     @Autenticado
     @Get("/{name}")
     public void getOne(String name) {
-        List<Keyword> p = keywordDAO.getByName(name);
-        result.use(Results.json()).withoutRoot().from(p).serialize();
+        Keyword k = keywordDAO.getByName(name);
+        result.use(Results.json()).withoutRoot().from(k).serialize();
     }
 
     @Autenticado
