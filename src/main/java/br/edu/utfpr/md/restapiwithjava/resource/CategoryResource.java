@@ -82,14 +82,6 @@ public class CategoryResource {
         // obtem todas as categorias de um usuario
         Pessoa p = pessoaDAO.getById(id);
         List<Category> categories = pessoaDAO.getDistinctCategories(p);
-        result.use(Results.status()).header("Content-type", "text/html");
-        result.use(Results.status()).ok();
-        String resultado = "";
-        if (categories != null) {
-            for (Category category : categories) {
-                resultado = resultado + category.getName() + " ";
-            }
-        }
-        result.use(Results.http()).body(resultado);
+        result.use(Results.json()).withoutRoot().from(categories).serialize();
     }
 }
