@@ -112,5 +112,10 @@ public class Document implements Serializable {
         this.keywords = keywords;
     }
 
+    @Override
+    public String toString() {
+        return "Document{" + "id=" + id + ", description=" + description + ", date=" + date + ", lastUpdate=" + lastUpdate + ", fileName=" + fileName + ", category=" + category + ", keywords=" + keywords + '}';
+    }
+
     
 }

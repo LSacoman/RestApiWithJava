@@ -31,7 +31,6 @@ public class RequestToken {
     
     public String getUserRole(){
         Map<String, Object> claims = mapClaims();
-        System.out.println("claims    " +claims);
         return (String) claims.get("role");
     }
     

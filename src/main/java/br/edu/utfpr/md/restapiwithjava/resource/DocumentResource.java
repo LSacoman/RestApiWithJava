@@ -25,6 +25,8 @@ import javax.inject.Inject;
 public class DocumentResource {
 
     @Inject
+    private RequestToken requestToken;
+    @Inject
     private DocumentDAO documentDAO;
     @Inject
     private PessoaDAO pessoaDAO;
@@ -32,11 +34,6 @@ public class DocumentResource {
     private KeywordDAO keywordDAO;
     @Inject
     private Result result;
-    
-    private RequestToken token;
-    
-    
-            
 
     @Autenticado
     @Post(value = {"", "/"})
@@ -54,19 +51,33 @@ public class DocumentResource {
     @Put(value = {"", "/"})
     @Consumes("application/json")
     public void update(Document document) {
-        documentDAO.update(document);
-        result.use(Results.json()).withoutRoot().from(document).serialize();
+        Pessoa owner = documentDAO.getDocumentOwner(document);
+        if (owner.getId() == requestToken.getUserID()) {
+            documentDAO.update(document);
+            result.use(Results.json()).withoutRoot().from(document).serialize();
+        } else {
+            result.use(Results.http()).setStatusCode(401);
+            result.use(Results.json())
+                    .from("Ação permitida somente para o criador do documento", "msg").serialize();
+        }
     }
 
     @Autenticado
     @Delete("/{id}")
     public void delete(int id) {
-        Document p = documentDAO.getById(id);
-        if (p == null) {
-            result.use(Results.status()).notFound();
+        Document document = documentDAO.getById(id);
+        Pessoa owner = documentDAO.getDocumentOwner(document);
+        if (owner.getId() == requestToken.getUserID()) {
+            if (document == null) {
+                result.use(Results.status()).notFound();
+            } else {
+                documentDAO.delete(document);
+                result.use(Results.nothing());
+            }
         } else {
-            documentDAO.delete(p);
-            result.use(Results.nothing());
+            result.use(Results.http()).setStatusCode(401);
+            result.use(Results.json())
+                    .from("Ação permitida somente para o criador do documento", "msg").serialize();
         }
     }
 

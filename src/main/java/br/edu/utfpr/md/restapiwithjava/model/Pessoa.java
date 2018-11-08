@@ -30,11 +30,11 @@ public class Pessoa implements Serializable {
     private String nome;
     private String login;
     private String senha;
-    
+
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
-    
+
     @OneToMany(cascade = CascadeType.PERSIST, targetEntity = Document.class)
     private Collection<Document> documents = new ArrayList<>();
 
@@ -97,5 +97,9 @@ public class Pessoa implements Serializable {
         this.documents = documents;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Pessoa{" + "id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", address=" + address + ", documents=" + documents + '}';
+    }
+
 }

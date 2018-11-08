@@ -38,11 +38,10 @@ public class AdminInterceptor {
 
         String token = requestToken.getToken();
         String role = requestToken.getUserRole();
-        System.out.println("ROLE   " + role);
         if (!role.equals("Admin")) {
             result.use(Results.http()).setStatusCode(401);
-                result.use(Results.json())
-                        .from("Acesso Permitido Somente para Administradores", "msg").serialize();
+            result.use(Results.json())
+                    .from("Acesso Permitido Somente para Administradores", "msg").serialize();
         }else{
             result.use(Results.http()).addHeader("Authorization", token);
             stack.next();

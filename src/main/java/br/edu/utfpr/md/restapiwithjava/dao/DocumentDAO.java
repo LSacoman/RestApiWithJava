@@ -52,4 +52,23 @@ public class DocumentDAO extends GenericDAO<Integer, Document> {
         }
         return lista;
     }
+    
+    public Pessoa getDocumentOwner(Document document){
+        Pessoa p = new Pessoa();
+        try {
+            TypedQuery<Pessoa> doc = entityManager.createQuery(""
+                    + "SELECT "
+                    + "     p "
+                    + "FROM "
+                    + "     Pessoa p, "
+                    + "     Document d "
+                    + "WHERE "
+                    + "     p.documents = d"
+                    + "     AND d.id = " + document.getId(),
+                    Pessoa.class);
+            p = doc.getSingleResult();
+        } catch (Exception e) {
+        }
+        return p;
+    }
 }
