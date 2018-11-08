@@ -16,6 +16,7 @@ import br.edu.utfpr.md.restapiwithjava.model.Document;
 import br.edu.utfpr.md.restapiwithjava.model.Keyword;
 import br.edu.utfpr.md.restapiwithjava.model.Pessoa;
 import br.edu.utfpr.md.restapiwithjava.security.Autenticado;
+import br.edu.utfpr.md.restapiwithjava.security.RequestToken;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -31,6 +32,11 @@ public class DocumentResource {
     private KeywordDAO keywordDAO;
     @Inject
     private Result result;
+    
+    private RequestToken token;
+    
+    
+            
 
     @Autenticado
     @Post(value = {"", "/"})

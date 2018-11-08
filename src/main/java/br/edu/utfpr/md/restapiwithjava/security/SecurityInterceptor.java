@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import br.com.caelum.vraptor.AroundCall;
 import br.com.caelum.vraptor.Intercepts;
@@ -25,7 +24,7 @@ import java.util.ResourceBundle;
 @AcceptsWithAnnotations(Autenticado.class)
 public class SecurityInterceptor {
 
-    private HttpServletRequest request;
+    private RequestToken requestToken;
     private Result result;
     private ResourceBundle bundle;
 
@@ -34,8 +33,8 @@ public class SecurityInterceptor {
     }
 
     @Inject
-    public SecurityInterceptor(HttpServletRequest request, Result result, ResourceBundle bundle) {
-        this.request = request;
+    public SecurityInterceptor(RequestToken requestToken, Result result, ResourceBundle bundle) {
+        this.requestToken = requestToken;
         this.result = result;
         this.bundle = bundle;
     }
@@ -43,25 +42,11 @@ public class SecurityInterceptor {
     @AroundCall
     public void intercept(SimpleInterceptorStack stack) {
 
-        String token = request.getHeader("authorization");
-
         Map<String, Object> claims;
         try {
-            claims = JWTUtil.decode(token);
-            System.out.println(claims);
-
-            Integer userId = (Integer) claims.get("user");
-            String role = (String) claims.get("role");
-
-            /*if (userId != 1) {
-                result.use(Results.http()).setStatusCode(401);
-                result.use(Results.json())
-                        .from("Credenciais inválidas", "msg").serialize();
-            } else {*/
-            result.use(Results.http()).addHeader("Authorization", token);
-
+            claims = JWTUtil.decode(requestToken.getToken());
+            result.use(Results.http()).addHeader("Authorization", requestToken.getToken());
             stack.next();
-            /* }*/
         } catch (InvalidKeyException | NoSuchAlgorithmException
                 | IllegalStateException | SignatureException | IOException
                 | JWTVerifyException e) {
